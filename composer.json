@@ -18,12 +18,14 @@
         "jeremykenedy/laravel-roles": "^10.0",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
+        "laravel/socialite": "^5.15",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.1",
         "swayok/alternative-laravel-cache": "^6.1",
         "swayok/cache-filesystem-adapter": "^1.3",
         "tightenco/ziggy": "^1.5",
-        "timedoor/laravel-role-js": "^0.1.1"
+        "timedoor/laravel-role-js": "^0.1.1",
+        "timedoor/tmd-membership": "^1.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
