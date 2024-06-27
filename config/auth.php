@@ -44,6 +44,10 @@ return [
             'driver'   => 'session',
             'provider' => 'users',
         ],
+        'api-mobile' => [
+            'driver'   => 'session',
+            'provider' => 'accounts',
+        ],
     ],
 
     /*
@@ -67,6 +71,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model'  => App\Modules\User\Models\User::class,
+        ],
+        'accounts' => [
+            'driver' => 'eloquent',
+            'model'  => App\Modules\Account\Models\Account::class,
         ],
 
         // 'users' => [
