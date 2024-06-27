@@ -16,7 +16,13 @@ class OtpController extends Controller
     {
         DB::beginTransaction();
         try {
+            /** @var Otp $otp */
             $otp = (new Otp)->getInstance($request);
+
+            if($otp->hasReachRequestLimit($request)) {
+                throw new \Exception('LIMIT_REACH');
+            }
+
             $otp->email = $request->email;
             $otp->save();
 
@@ -27,7 +33,7 @@ class OtpController extends Controller
             return $e->getMessage();
         }
 
-        Mail::to($otp->email)->queue(new OtpMail($otp));
+        // Mail::to($otp->email)->queue(new OtpMail($otp));
 
         return response()->json([
             'data' => [

@@ -13,9 +13,10 @@ class Otp extends Model
 {
     use HasFactory;
 
-    const EXPIRED_OTP = 5; //in minute
+    const EXPIRED_OTP = 30; //in seconds
     const DIGIT_OTP   = 6;
-    const MAX_SEND    = 3;
+    const MAX_SEND    = 5;
+    const MAX_DURATION = 10; // in minutes
 
     protected $fillable = [
         'token',
@@ -31,7 +32,7 @@ class Otp extends Model
 
         self::creating(function($model) {
             $model->token      = $model->rand(self::DIGIT_OTP);
-            $model->expired_at = now()->addMinutes(self::EXPIRED_OTP)->format('Y-m-d H:i:s');
+            $model->expired_at = now()->addSeconds(self::EXPIRED_OTP)->format('Y-m-d H:i:s');
         });
 
         self::saving(function($model) {
@@ -128,5 +129,24 @@ class Otp extends Model
     private function rand($digit = 5)
     {
         return rand(pow(10, $digit-1), pow(10, $digit) -1);
+    }
+
+    public function hasReachRequestLimit($request)
+    {
+        logger([$this->count_sending, $this->isReachedMax()]);
+        if ($this->isReachedMax()) {
+            return true;
+        }   
+
+        $query = $this->query()->getLatestOtp($request)->withoutVerified();
+        $query->where('created_at', '>', now()->subMinutes(self::MAX_DURATION)->format('Y-m-d H:i:s'));
+        $otps = $query->get();
+        $count = $otps->count();
+
+        if ($count >= self::MAX_SEND) {
+            return true;
+        }
+
+        return $otps->sum('count_sending') >= self::MAX_SEND;
     }
 }
