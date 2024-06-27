@@ -68,13 +68,15 @@ class Otp extends Model
     {
         $otp = $this->query()
                     ->getLatestOtp($request)
-                    ->whereToken($request->token)
+                    ->whereToken($request->otp_code)
                     ->first();
 
         throw_if(!$otp, new OtpNotFound());
         throw_if($otp->isExpired(), new OtpExpiredException());
 
         $otp->verify();
+
+        return $otp;
     }
 
     public function scopeWithoutVerified($query)

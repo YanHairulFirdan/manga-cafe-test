@@ -82,7 +82,8 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => env('APP_LOCALE', 'en'),
+    'company' => env('APP_COMPANY', 'Company Name'),
 
     /*
     |--------------------------------------------------------------------------

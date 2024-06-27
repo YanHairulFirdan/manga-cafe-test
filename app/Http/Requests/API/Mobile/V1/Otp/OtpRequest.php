@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api\V1\Membership;
+namespace App\Http\Requests\API\Mobile\V1\Otp;
 
 use Illuminate\Foundation\Http\FormRequest;
 
